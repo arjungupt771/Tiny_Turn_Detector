@@ -1,5 +1,8 @@
 # Tiny Turn Detector — Shiprocket Voice AI Challenge
 
+
+if u want to run the application then run command : python /app/app.py
+
 > **Current status (most recent pass):** the baseline below (81.5%/0.813) is
 > real and now correctly the model actually shipped in `models/turn_detector_whisper.joblib`
 > — a stale-results bug that had shipped a worse model was found and fixed
