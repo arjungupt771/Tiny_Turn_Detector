@@ -1,0 +1,186 @@
+{
+  "acoustic_baseline_large": {
+    "description": "47-dim hand-crafted acoustic features (pitch/energy/pause stats), logistic regression, larger 8000/2000 split",
+    "n_train": 8000,
+    "n_val": 2000,
+    "accuracy": 0.5395,
+    "f1": 0.5077498663816141,
+    "precision": 0.5319148936170213,
+    "recall": 0.48568507157464214,
+    "confusion_matrix": [
+      [
+        604,
+        418
+      ],
+      [
+        503,
+        475
+      ]
+    ]
+  },
+  "acoustic_baseline_controlled": {
+    "description": "Same 54-dim acoustic features, evaluated on the identical 1600/400 split used for Whisper, to remove 'more data' as a confound",
+    "n_train": 1600,
+    "n_val": 400,
+    "accuracy": 0.5025,
+    "f1": 0.4884318766066838,
+    "precision": 0.472636815920398,
+    "recall": 0.5053191489361702,
+    "confusion_matrix": [
+      [
+        106,
+        106
+      ],
+      [
+        93,
+        95
+      ]
+    ]
+  },
+  "whisper_head_sweep": {
+    "logreg_C0.1": {
+      "cv_f1_mean": 0.5138261907554026,
+      "cv_f1_std": 0.0124046643216661,
+      "accuracy": 0.547,
+      "f1": 0.5180851063829788,
+      "precision": 0.5399113082039911,
+      "recall": 0.49795501022494887,
+      "confusion_matrix": [
+        [
+          607,
+          415
+        ],
+        [
+          491,
+          487
+        ]
+      ]
+    },
+    "logreg_C1": {
+      "cv_f1_mean": 0.5088038793750358,
+      "cv_f1_std": 0.01241884527488566,
+      "accuracy": 0.5395,
+      "f1": 0.5077498663816141,
+      "precision": 0.5319148936170213,
+      "recall": 0.48568507157464214,
+      "confusion_matrix": [
+        [
+          604,
+          418
+        ],
+        [
+          503,
+          475
+        ]
+      ]
+    },
+    "logreg_C10": {
+      "cv_f1_mean": 0.5079790884300011,
+      "cv_f1_std": 0.012406330724872692,
+      "accuracy": 0.5385,
+      "f1": 0.5072076882007475,
+      "precision": 0.5307262569832403,
+      "recall": 0.48568507157464214,
+      "confusion_matrix": [
+        [
+          602,
+          420
+        ],
+        [
+          503,
+          475
+        ]
+      ]
+    },
+    "svm_rbf_C1": {
+      "cv_f1_mean": 0.5240836921264326,
+      "cv_f1_std": 0.012290976640078423,
+      "accuracy": 0.579,
+      "f1": 0.5591623036649215,
+      "precision": 0.572961373390558,
+      "recall": 0.5460122699386503,
+      "confusion_matrix": [
+        [
+          624,
+          398
+        ],
+        [
+          444,
+          534
+        ]
+      ]
+    },
+    "svm_rbf_C5": {
+      "cv_f1_mean": 0.5352976028084673,
+      "cv_f1_std": 0.010780389207979373,
+      "accuracy": 0.585,
+      "f1": 0.5739219712525667,
+      "precision": 0.5762886597938144,
+      "recall": 0.5715746421267893,
+      "confusion_matrix": [
+        [
+          611,
+          411
+        ],
+        [
+          419,
+          559
+        ]
+      ]
+    },
+    "mlp_64": {
+      "cv_f1_mean": 0.5073768705665455,
+      "cv_f1_std": 0.015647657298427632,
+      "accuracy": 0.52,
+      "f1": 0.5031055900621118,
+      "precision": 0.5094339622641509,
+      "recall": 0.49693251533742333,
+      "confusion_matrix": [
+        [
+          554,
+          468
+        ],
+        [
+          492,
+          486
+        ]
+      ]
+    },
+    "mlp_32_16": {
+      "cv_f1_mean": 0.4666422507002979,
+      "cv_f1_std": 0.047073141945985726,
+      "accuracy": 0.516,
+      "f1": 0.4812433011789925,
+      "precision": 0.5056306306306306,
+      "recall": 0.4591002044989775,
+      "confusion_matrix": [
+        [
+          583,
+          439
+        ],
+        [
+          529,
+          449
+        ]
+      ]
+    }
+  },
+  "selected_model": {
+    "head": "svm_rbf_C5",
+    "cv_f1_mean": 0.5352976028084673,
+    "accuracy": 0.585,
+    "f1": 0.5739219712525667,
+    "precision": 0.5762886597938144,
+    "recall": 0.5715746421267893,
+    "confusion_matrix": [
+      [
+        611,
+        411
+      ],
+      [
+        419,
+        559
+      ]
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "scope": "Classifier head only (StandardScaler + LogisticRegression, 385 params), input = already-extracted 384-dim Whisper mean-pooled feature vector. Does NOT include audio preprocessing or Whisper-tiny encoder forward pass, which require network access to huggingface.co that is unavailable in this sandbox.",
+  "sklearn_fp32_batch1_latency_ms": {
+    "mean_ms": 0.1550269449995767,
+    "p50_ms": 0.1449170000284994,
+    "p95_ms": 0.21478449997971438,
+    "p99_ms": 0.24118614000201427,
+    "stdev_ms": 0.02640379589138709,
+    "n_runs": 200
+  },
+  "process_peak_rss_kb": 149508,
+  "note_on_full_pipeline_latency": "The README's existing anecdotal 38.2ms end-to-end CLI number (audio load + Whisper-tiny forward pass + classifier) was measured in an earlier session that had model/network access; it could not be reproduced or re-benchmarked here. A real, sweepable 1/2/4/6/8s-duration end-to-end benchmark requires the Whisper encoder, which this sandbox cannot download.",
+  "durations_swept": "NOT RUN -- requires loading real audio at varying durations through the Whisper-tiny encoder, which requires huggingface.co access unavailable in this sandbox. Command to run elsewhere: `python scripts/benchmark_latency_full_pipeline.py --durations 1,2,4,6,8` (to be written once encoder access exists).",
+  "gpu": "NOT RUN -- no GPU present in this sandbox (CPU-only container) and no encoder available to benchmark anyway."
+}

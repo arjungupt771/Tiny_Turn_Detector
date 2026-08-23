@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Policy Library · GBVH Compliance Platform</title>
+
+<!-- Favicon --> 
+<link rel="icon" href="/static/favicon.ico?v=2" type="image/x-icon">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="/static/css/policy_lib.css">
+</head>
+<body>
+        <!-- ===========================
+         HEADER
+    ============================ -->
+    <header>
+
+        <div class="header-left">
+
+            <div class="container-logo">
+
+            <img
+                src="/static/logo.svg"
+                alt="Digital Toolkit / Private Sector Coalition Against GBVH"
+                class="logo-built"
+            >
+        </div>
+
+            <!-- <div class="subtitle">
+                Manage compliance frameworks.
+            </div> -->
+            <div class="header-title"><h1>Policy Library</h1></div>
+
+        </div>
+        
+
+        <a class="back-link" href="/">
+            <i data-lucide="arrow-left"></i>
+            Back to Analysis
+        </a>
+
+    </header>
+
+    <!-- ===========================
+         MAIN CONTENT
+    ============================ -->
+
+    <main>
+
+        <section class="page-header">
+            <div class="page-title">
+                <h2>Compliance Frameworks</h2>
+            </div>
+            <div class="page-controls">
+                <div class="search-box">
+                    <i data-lucide="search"></i>
+
+                    <input
+                        id="searchPolicy"
+                        type="text"
+                        placeholder="Search policies..." />
+                </div>
+                <select id="scopeFilter">
+                    <option value="">All Regions</option>
+                    <option value="Global">Global</option>
+                    <option value="India">India</option>
+                </select>
+                <button
+                    id="addPolicyBtn"
+                    class="btn-primary">
+
+                    <i data-lucide="plus"></i>
+
+                    Add Policy
+            </div>
+        </section>
+
+
+        <!-- STATUS MESSAGE -->
+
+        <div
+            id="statusMsg"
+            class="status-msg">
+
+        </div>
+
+
+
+        <!-- ===========================
+             TABLE CARD
+        ============================ -->
+
+        <section class="table-card">
+
+            <div class="table-wrapper">
+
+                <table class="policy-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th style="width:40%;">
+                                Policy Name
+                            </th>
+
+                            <th>
+                                Region
+                            </th>
+
+                            <th>
+                                Version
+                            </th>
+
+                            <!-- <th style="width:150px;">
+                                Requirements
+                            </th> -->
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="policyTableBody">
+
+                        <!-- Dynamic Rows -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- EMPTY STATE -->
+
+            <div
+                id="emptyState"
+                class="empty-state"
+                style="display:none;">
+
+                <i data-lucide="database"></i>
+
+                <h3>No Policies Found</h3>
+
+                <p>
+
+                    No compliance frameworks match your current filters.
+
+                </p>
+
+            </div>
+
+            <!-- TABLE FOOTER -->
+
+            <div class="table-footer">
+
+                <div class="table-info">
+
+                    Showing
+
+                    <strong id="startRow">0</strong>
+
+                    -
+
+                    <strong id="endRow">0</strong>
+
+                    of
+
+                    <strong id="totalPolicies">0</strong>
+
+                    policies
+
+                </div>
+
+                <div class="footer-right">
+                    <div class="rows-selector">
+                        <label for="rowsPerPage">
+                            Rows per page
+                        </label>
+                        <select id="rowsPerPage">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="pagination">
+                        <button class="page-btn" id="prevPage">
+                            <i data-lucide="chevron-left"></i>
+                        </button>
+                        <div id="pageNumbers">
+                        </div>
+                        <button class="page-btn" id="nextPage">
+                            <i data-lucide="chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ===========================
+         ADD POLICY MODAL
+    ============================ -->
+
+    <div
+        class="modal-overlay"
+        id="addModal">
+
+        <div class="modal-window">
+            <div id = "modalLoader" class="modal-loader hidden">
+                <div class="loader-spinner"></div>
+                <h4 id="loaderTitle">Adding Policy...</h4>
+                <p id="loaderStatus">
+                    preparing Document...
+                </p>
+            </div>
+
+            <h3>Add New Policy</h3>
+
+            <form id="addPolicyForm">
+
+                <div class="form-row">
+
+                    <label>
+                        Policy Document
+                    </label>
+
+                    <input
+                        id="policyFile"
+                        type="file"
+                        accept=".pdf,.docx,.txt,.md"
+                        required>
+
+                </div>
+
+                <div class="form-row">
+
+                    <label>
+                        Policy Name
+                    </label>
+
+                    <input
+                        id="policyName"
+                        type="text"
+                        placeholder="e.g. POSH Act, 2013"
+                        required>
+
+                </div>
+
+                <div class="form-row">
+
+                    <label>
+                        Category
+                    </label>
+
+                    <input
+                        id="policyCategory"
+                        type="text"
+                        placeholder="National / International / Company">
+
+                </div>
+
+                <div class="form-row">
+
+                    <label>
+                        Country / Region
+                    </label>
+
+                    <input
+                        id="policyCountry"
+                        type="text"
+                        placeholder="India / Global">
+
+                </div>
+
+                <div class="form-row">
+
+                    <label>
+                        Version
+                    </label>
+
+                    <input
+                        id="policyVersion"
+                        type="text"
+                        placeholder="e.g. 2025">
+
+                </div>
+
+                <!-- <div class="form-row">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                        id="policyDescription"
+                        placeholder="Short description shown in the library"></textarea>
+
+                </div> -->
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="btn-secondary"
+                        id="cancelAddBtn">
+
+                        Cancel
+
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-primary"
+                        id="submitAddBtn">
+
+                        Add Policy
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+<script>
+const policyTableBody = document.getElementById("policyTableBody");
+
+const statusMsg = document.getElementById("statusMsg");
+
+const addModal = document.getElementById("addModal");
+const modalLoader = document.getElementById("modalLoader");
+
+const loaderStatus =
+    document.getElementById("loaderStatus");
+
+const loaderTitle =
+    document.getElementById("loaderTitle");
+
+const submitAddBtn =
+    document.getElementById("submitAddBtn");
+
+const cancelAddBtn =
+    document.getElementById("cancelAddBtn");
+
+const addPolicyForm =
+    document.getElementById("addPolicyForm");
+
+const emptyState = document.getElementById("emptyState");
+
+const startRow = document.getElementById("startRow");
+
+const endRow = document.getElementById("endRow");
+
+const totalPolicies = document.getElementById("totalPolicies");
+
+const searchPolicy = document.getElementById("searchPolicy");
+
+const scopeFilter = document.getElementById("scopeFilter");
+
+const rowsPerPageSelect = document.getElementById("rowsPerPage");
+
+const prevPage = document.getElementById("prevPage");
+
+const nextPage = document.getElementById("nextPage");
+
+const pageNumbers = document.getElementById("pageNumbers");
+
+let allPolicies = [];
+
+let filteredPolicies = [];
+
+let currentPage = 1;
+
+let rowsPerPage = Number(rowsPerPageSelect.value);
+
+function showStatus(message, type) {
+    statusMsg.textContent = message;
+    statusMsg.className = `status-msg show ${type}`;
+    setTimeout(() => statusMsg.classList.remove('show'), 5000);
+}
+
+async function loadPolicies(){
+
+    try{
+
+        const res = await fetch("/policies");
+
+        const data = await res.json();
+
+        if(!data.success){
+
+            showStatus("Failed to load policies.","error");
+
+            return;
+
+        }
+
+        allPolicies=data.policies || [];
+
+        applyFilters();
+
+    }
+
+    catch(err){
+
+        console.error(err);
+
+        showStatus("Could not reach the server.","error");
+
+    }
+
+}
+
+function showLoader(message){
+    console.log("showLoader called:", message);
+
+
+    loaderTitle.textContent="Adding Policy";
+
+    loaderStatus.textContent=message;
+
+    modalLoader.classList.remove("hidden");
+
+}
+
+function updateLoader(message){
+
+    loaderStatus.textContent=message;
+
+}
+
+function hideLoader(){
+
+    modalLoader.classList.add("hidden");
+
+}
+
+function disableModal(){
+
+    submitAddBtn.disabled=true;
+
+    cancelAddBtn.disabled=true;
+
+    addPolicyForm
+        .querySelectorAll("input,select,textarea")
+        .forEach(el=>el.disabled=true);
+
+}
+
+function enableModal(){
+
+    submitAddBtn.disabled=false;
+
+    cancelAddBtn.disabled=false;
+
+    addPolicyForm
+        .querySelectorAll("input,select,textarea")
+        .forEach(el=>el.disabled=false);
+
+}
+
+
+
+function renderPagination() {
+
+    pageNumbers.innerHTML = "";
+
+    const totalPages =
+        Math.ceil(filteredPolicies.length / rowsPerPage);
+
+    prevPage.disabled = currentPage <= 1;
+    nextPage.disabled = currentPage >= totalPages;
+    prevPage.style.opacity = prevPage.disabled ? ".5" : "1";
+    nextPage.style.opacity = nextPage.disabled ? ".5" : "1";
+
+    for (let i = 1; i <= totalPages; i++) {
+
+        const btn =
+            document.createElement("button");
+
+        btn.className =
+            "page-number";
+
+        if (i === currentPage)
+            btn.classList.add("active");
+
+        btn.textContent = i;
+
+        btn.onclick = () => {
+
+            currentPage = i;
+
+            renderTable();
+
+        };
+
+        pageNumbers.appendChild(btn);
+
+    }
+
+}
+
+
+function renderTable() {
+
+    policyTableBody.innerHTML = "";
+
+    if (filteredPolicies.length === 0) {
+
+        emptyState.style.display = "flex";
+
+        document.querySelector(".table-card").style.display = "none";
+
+        startRow.textContent = 0;
+
+        endRow.textContent = 0;
+
+        totalPolicies.textContent = 0;
+
+        return;
+
+    }
+
+    emptyState.style.display = "none";
+
+    document.querySelector(".table-card").style.display = "block";
+
+    const start = (currentPage - 1) * rowsPerPage;
+
+    const end = start + rowsPerPage;
+
+    const pageItems = filteredPolicies.slice(start, end);
+
+    pageItems.forEach(policy => {
+
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>
+
+                <div class="policy-name">
+
+                    ${policy.name}
+
+                </div>
+
+            </td>
+
+            <td>
+
+                ${policy.country || "Global"}
+
+            </td>
+
+            <td>
+
+                ${policy.version || "-"}
+
+            </td>
+
+            <td>
+
+                <button
+                    class="toggle ${policy.enabled ? "on" : ""}"
+                    data-id="${policy.id}">
+
+                    <span class="knob"></span>
+
+                </button>
+
+            </td>
+
+            <td>
+
+                <div class="table-actions">
+
+                    <button
+                        class="icon-btn delete-btn"
+                        data-delete="${policy.id}">
+
+                        <i data-lucide="trash-2"></i>
+
+                    </button>
+
+                </div>
+
+            </td>
+
+        `;
+
+        policyTableBody.appendChild(tr);
+
+    });
+
+    lucide.createIcons();
+
+    bindRowEvents();
+
+    updateFooter();
+    renderPagination();
+
+}
+
+prevPage.onclick = () => {
+
+    if (currentPage <= 1)
+        return;
+
+    currentPage--;
+
+    renderTable();
+
+};
+
+nextPage.onclick = () => {
+
+    const totalPages =
+        Math.ceil(
+            filteredPolicies.length /
+            rowsPerPage
+        );
+
+    if (currentPage >= totalPages)
+        return;
+
+    currentPage++;
+
+    renderTable();
+
+};
+
+searchPolicy.addEventListener("input", applyFilters);
+
+scopeFilter.addEventListener("change", applyFilters);
+
+rowsPerPageSelect.addEventListener("change", function () {
+
+    rowsPerPage =
+        Number(this.value);
+    applyFilters();
+
+});
+
+function applyFilters() {
+
+    const keyword = searchPolicy.value.trim().toLowerCase();
+    const scope = scopeFilter.value.toLowerCase();
+
+    filteredPolicies = allPolicies.filter(policy => {
+
+        const matchesSearch =
+            (policy.name || "").toLowerCase().includes(keyword) ||
+            (policy.description || "").toLowerCase().includes(keyword) ||
+            (policy.country || "").toLowerCase().includes(keyword);
+
+        const matchesScope =
+            scope === "" ||
+            (policy.country || "").toLowerCase() === scope;
+
+        return matchesSearch && matchesScope;
+    });
+
+    currentPage = 1;
+
+    renderTable();
+}
+
+async function togglePolicy(id, enabled) {
+    try {
+        const res = await fetch(`/policies/${id}/enabled`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ enabled })
+        });
+        const data = await res.json();
+        if (data.success) {
+            loadPolicies();
+        } else {
+            showStatus(data.message || 'Failed to update policy.', 'error');
+        }
+    } catch (e) {
+        showStatus('Could not reach the server.', 'error');
+    }
+}
+
+async function deletePolicy(id) {
+    const confirmed= confirm(
+        "Delete this policy permanently? \n\n This action cannot be undone."
+    );
+    if(!confirmed) return;
+    try {
+        const res = await fetch(`/policies/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+            showStatus('Policy removed.', 'success');
+            loadPolicies();
+        } else {
+            showStatus(data.message || 'Failed to delete policy.', 'error');
+        }
+    } catch (e) {
+        showStatus('Could not reach the server.', 'error');
+    }
+}
+
+document.getElementById('addPolicyBtn').addEventListener('click', () => hideLoader() || enableModal() || addPolicyForm.reset() || addModal.classList.add('show'));
+document.getElementById('cancelAddBtn').addEventListener('click', () => addModal.classList.remove('show'));
+
+document.getElementById('addPolicyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    showLoader("Uploading policy...");
+    disableModal();
+    const submitBtn = document.getElementById('submitAddBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML=` <div class="btn-loader"></div>Adding Policy...`;
+    const fileInput = document.getElementById('policyFile');
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+    formData.append('name', document.getElementById('policyName').value);
+    formData.append('category', document.getElementById('policyCategory').value || 'Custom');
+    formData.append('country', document.getElementById('policyCountry').value || 'Global');
+    formData.append('version', document.getElementById('policyVersion').value || '');
+    //formData.append('description', document.getElementById('policyDescription').value || '');
+
+    try {
+        const res = await fetch('/policies/upload', { method: 'POST', body: formData });
+        updateLoader("Extracting policy...");
+        const data = await res.json();
+        updateLoader("Generating requirements...");
+
+        
+        if (data.success) {
+
+            updateLoader("Saving policy...");
+
+            await loadPolicies();
+
+            loaderTitle.textContent="Completed";
+
+            loaderStatus.textContent="Policy added successfully.";
+
+            await new Promise(resolve=>setTimeout(resolve,1000));
+
+            hideLoader();
+
+            enableModal();
+
+            addModal.classList.remove("show");
+
+            // Get value BEFORE resetting the form
+            const policyName = document.getElementById('policyName').value;
+
+            // console.log("Policy Name:", policyName);
+
+            addPolicyForm.reset();
+
+            showStatus(
+                `"${policyName}" policy added successfully.`,
+                "success"
+            );
+         
+        } else {
+            showStatus(data.message || 'Failed to add policy.', 'error');
+        }
+    } catch (e) {
+        showStatus('Could not reach the server.', 'error');
+    } finally {
+        submitAddBtn.disabled = false;
+        submitAddBtn.innerHTML = 'Add Policy';
+    }
+});
+
+function updateFooter() {
+
+    const total = filteredPolicies.length;
+
+    const start = total === 0
+        ? 0
+        : (currentPage - 1) * rowsPerPage + 1;
+
+    const end = Math.min(
+        currentPage * rowsPerPage,
+        total
+    );
+
+    startRow.textContent = start;
+
+    endRow.textContent = end;
+
+    totalPolicies.textContent = total;
+
+}
+
+function bindRowEvents() {
+
+    document.querySelectorAll(".toggle").forEach(btn => {
+
+        btn.onclick = () => {
+
+            togglePolicy(
+                btn.dataset.id,
+                !btn.classList.contains("on")
+            );
+
+        };
+
+    });
+
+    document.querySelectorAll("[data-delete]").forEach(btn => {
+
+        btn.onclick = () => {
+
+            deletePolicy(btn.dataset.delete);
+
+        };
+
+    });
+
+}
+
+
+lucide.createIcons();
+loadPolicies();
+</script>
+
+</body>
+</html>

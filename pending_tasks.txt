@@ -1,0 +1,240 @@
+TASK: Complete the Remaining (Not-Yet-Done) Work on the Smart Turn / Audio Turn
+Detection ML Project
+
+You are continuing work on an existing repository (`Audio_ml_model/`) for the
+Shiprocket Data Scientist challenge. A prior pass already completed the data
+pipeline, threshold/calibration/error-analysis work, and streaming scaffolding.
+This prompt covers ONLY what has not been done yet. Do not redo or destroy the
+work already present — inspect it first, then build on top of it.
+
+============================================================
+0. CURRENT STATE — READ THIS BEFORE TOUCHING ANYTHING
+============================================================
+
+Already done and verified in the repo (do not repeat, do not break):
+
+- `data/manifests/{train,val,test}.csv` — proper train/val/official-test split,
+  seeded (42), leakage-checked, documented in `TASK1_SPLIT_REPORT.md`.
+- `experiments/data_scaling/results.csv` — learning curve at 400/800/1200/1600
+  training samples (smaller than the 10K/25K/50K target — see Task 2 below).
+- `src/model.py` — `MeanPooling`, `MaxPooling`, `LastFramePooling`,
+  `AttentionPooling`, `TurnMLPHead`, `TemporalTurnClassifier` are implemented
+  and unit-tested (`tests/test_model.py`), but have never been trained or
+  evaluated — no metrics exist for them yet.
+- `reports/threshold_sweep.csv`, `reports/selected_threshold.json` (threshold
+  = 0.45, tuned on validation only), `reports/calibration.json` (Brier/ECE,
+  no temperature scaling yet), `reports/targeted_metrics.csv`,
+  `reports/error_analysis.csv` — real, already-computed metrics for the
+  frozen-Whisper mean-pool + logistic-regression baseline (81.5% acc / 0.813
+  F1 on the OLD 400-example validation split — note the split sizes changed
+  in Task 1's later split-report to 800 val / 500 official test, so these
+  reports may need to be regenerated against the current manifests before
+  they're trustworthy for the final comparisons below).
+- `src/streaming.py` — `StreamingTurnDetector` with a sliding window + a
+  simple energy-based VAD gate (documented as a simulation, not a real VAD).
+- `app/app.py` — Gradio demo showing verdict, confidence, threshold, latency,
+  model version (partially upgraded; missing waveform/explanation/Hinglish
+  examples).
+- `README.md` — exists but is STALE: it still lists attention pooling,
+  fine-tuning, streaming, and a Hinglish eval set as "future work," which
+  contradicts what's partially built in `src/model.py` / `src/streaming.py`.
+  Do not trust it as a source of truth about what's done — trust the actual
+  code/data/reports, and rewrite it as the very last step (Task 26, not in
+  scope here unless you also pick it up).
+
+The current strongest model with real, trustworthy metrics is still the
+original baseline: frozen `openai/whisper-tiny` encoder → mean pooling →
+StandardScaler → Logistic Regression (C=0.1), ~81.5% accuracy / 0.813 F1.
+Treat this as the baseline every new experiment below must be compared
+against.
+
+============================================================
+1. WHAT TO DO — ONLY THE NOT-YET-DONE TASKS
+============================================================
+
+Work in this order. Each task must produce real, run, saved artifacts — never
+fabricate a metric, a plot, or a claim. If something can't be run in this
+environment (e.g. no GPU, no network), say so explicitly in the deliverable
+and document the exact command needed to run it elsewhere.
+
+---
+TASK 5 — COMPARE POOLING STRATEGIES (currently: empty `experiments/pooling_comparison/cache/`)
+---
+Using the already-implemented `MeanPooling`, `MaxPooling`, `LastFramePooling`,
+and `AttentionPooling` in `src/model.py`, run a controlled experiment that
+trains a `TemporalTurnClassifier` with each pooling strategy, holding
+everything else identical (same frame-level Whisper features, same
+train/val split, same seed, same MLP head size).
+
+Produce a real table:
+
+| Pooling    | Accuracy | Precision | Recall | F1 |
+|------------|----------|-----------|--------|----|
+| Mean       |          |           |        |    |
+| Max        |          |           |        |    |
+| Last       |          |           |        |    |
+| Attention  |          |           |        |    |
+
+Save results to `experiments/pooling_comparison/results.csv` (currently
+missing — only a cache dir exists). Note: this requires frame-level
+(un-pooled) Whisper hidden states, not the already-cached pooled 384-dim
+vectors used for the logistic-regression baseline — you likely need a new
+extraction pass (`hidden_states` before pooling) since the existing cached
+features in `data/whisper_features/` may already be pooled. Check this before
+assuming you can reuse them.
+
+---
+TASK 6 — FINE-TUNE WHISPER
+---
+Run the three controlled experiments as specified:
+- Experiment A: frozen Whisper + attention pooling + MLP (this becomes your
+  new architecture baseline, using Task 5's winning pooling method).
+- Experiment B: unfreeze only the final ~4 Whisper encoder layers, rest
+  frozen.
+- Experiment C (only if compute allows): fully fine-tuned Whisper encoder.
+
+Use AdamW, a lower LR for Whisper params than the classifier head, a
+scheduler, gradient clipping, early stopping on validation F1, and best-
+checkpoint saving. For each experiment report: trainable params, total
+params, training time, validation F1, test F1 (only if you've reached Task
+25 — do NOT touch the official test set for model selection here), latency.
+If compute genuinely isn't available for B/C, say so plainly instead of
+skipping silently — don't leave this task looking done when it isn't.
+
+---
+TASK 8 — BUILD A REAL HINGLISH EVALUATION SET
+---
+The dataset has no code-switch tag — this was correctly flagged as a
+limitation, not solved. Build a small dedicated Hinglish eval set (~50–200
+examples) covering code-switching, fillers (um, uh, hmm, actually, basically,
+like, matlab, toh, haan, acha, wait), pauses of varying length, and ambiguous
+endings.
+
+If you cannot collect or license real recordings in this environment, build
+a clearly-labeled SYNTHETIC Hinglish set (e.g. TTS-generated from your own
+written code-switched sentences) and say so explicitly in the manifest and
+anywhere the results are reported — never present synthetic results as if
+they were real human Hinglish. Save the manifest (with a `synthetic_hinglish`
+flag) and run the current best model against it, reporting accuracy/F1
+alongside the overall/language/filler breakdowns already in
+`reports/targeted_metrics.csv`.
+
+---
+TASK 15 — LATENCY BENCHMARK
+---
+Nothing exists for this yet beyond one anecdotal number in the README
+(38.2 ms for a single CLI call). Build a real benchmark script
+(`scripts/benchmark.py` or similar) that runs ≥100 inference passes and
+reports mean, median/P50, P95, P99, stdev, and peak memory, separately for
+CPU (and GPU if available). Sweep audio durations (1/2/4/6/8s) and plot
+duration vs. latency. Report cold-start vs. warm latency separately. Save
+results as `reports/latency_benchmark.csv` + a plot.
+
+---
+TASK 17 — EXPORT TO ONNX
+---
+`onnx`/`onnxruntime` are already in `requirements.txt` but nothing has
+actually been exported. Once you've settled on a final architecture (after
+Tasks 5/6), write `scripts/export_onnx.py`, export the model, and verify
+PyTorch vs. ONNX outputs match within a reasonable numerical tolerance. Keep
+the PyTorch implementation — do not remove it.
+
+---
+TASK 18 — INT8 QUANTIZATION
+---
+After the ONNX export, produce an INT8-quantized version. Build the
+comparison table:
+
+| Model       | Size | F1 | Latency |
+|-------------|------|----|---------| 
+| PyTorch FP32 |     |    |         |
+| ONNX FP32    |     |    |         |
+| ONNX INT8    |     |    |         |
+
+Investigate and report on any meaningful F1 drop rather than just noting it.
+
+---
+TASK 19 — VERIFY THE QUANTIZED MODEL
+---
+Run the same test suite (or a new one) against FP32 PyTorch, ONNX FP32, and
+ONNX INT8: output validity, numerical consistency, classification-decision
+consistency, latency, memory. Add automated export/inference tests under
+`tests/` if practical (e.g. `tests/test_export.py`).
+
+---
+TASK 21 — DEPLOY TO HUGGING FACE
+---
+If credentials/deployment access are available in this environment, create a
+Hugging Face Space (`app.py`, `requirements.txt`, model files, README) and
+test the deployed app. If deployment can't be done from here, make the repo
+deployment-ready and write the exact step-by-step commands in the README —
+do not claim a live Space exists if one doesn't.
+
+---
+TASK 24 — MASTER RESULTS TABLE
+---
+This depends on Tasks 5, 6, 17, and 18 actually being run — do not populate
+rows you don't have real numbers for. Build the final comparison:
+
+| Experiment           | Data | Pooling   | Fine-tuned | Accuracy | Precision | Recall | F1 | Size | Latency |
+|-----------------------|------|-----------|------------|----------|-----------|--------|----|------|---------|
+| Acoustic LR           | 2K   | —         | No         |          |           |        |    |      |         |
+| Whisper + LR          | 2K   | Mean      | No         |          |           |        |    |      |         |
+| Whisper + MLP         |      | Mean      | No         |          |           |        |    |      |         |
+| Whisper + Attention   |      | Attention | No         |          |           |        |    |      |         |
+| Fine-tuned Whisper    |      | Attention | Partial    |          |           |        |    |      |         |
+| Final FP32            |      |           |            |          |           |        |    |      |         |
+| Final ONNX            |      |           |            |          |           |        |    |      |         |
+| Final INT8            |      |           |            |          |           |        |    |      |         |
+
+Leave any row blank (with a note why) rather than fabricating a value.
+
+---
+TASK 25 — FINAL TEST SET EVALUATION
+---
+Nothing has touched `data/manifests/test.csv` (the official held-out test
+set) yet — every metric reported so far is validation-only. Only after
+architecture (Tasks 5/6), threshold, and calibration are finalized, run the
+chosen final model ONCE on the official test set. Report accuracy,
+precision, recall, F1, confusion matrix, and the same targeted subsets used
+for validation (language, filler, synthetic/human, and — if Task 8 is done —
+Hinglish). Do not modify the model after seeing these results.
+
+---
+TASK 27 — WRITE THE TECHNICAL REPORT (`REPORT.md`)
+---
+Does not exist yet. Once the above is done, write `REPORT.md` answering the
+15 questions from the original brief (why this problem, why acoustic
+features were insufficient, why mean pooling was insufficient, why attention
+pooling was/wasn't better, why fine-tuning was/wasn't useful, major error
+modes, Hinglish impact, filler impact, threshold selection rationale, speed,
+size, quantization impact, limitations, what you'd do with more data/time).
+Write it as a human engineering report grounded only in what was actually
+run — no generic filler.
+
+---
+FINAL QUALITY CHECK
+---
+Before calling the project done, re-verify the full checklist from the
+original brief, specifically the boxes that are currently unchecked:
+official test evaluation, attention-pooling result, fine-tuning result,
+Hinglish metrics, latency benchmark, ONNX export, INT8 model, ONNX inference
+verified, Hugging Face deployment (or deployment-ready repo), and "no
+fabricated metrics." Also re-check `README.md` and `PROJECT_AUDIT.md` for
+consistency with whatever you've actually finished — update them if they
+still describe things as "not done" that this pass completed.
+
+============================================================
+2. RULES (unchanged from the original brief)
+============================================================
+- Inspect before modifying; do not delete existing experiments.
+- Do not fabricate metrics, Hinglish results, or benchmark numbers.
+- Do not use the official test set for model selection or threshold tuning
+  (only for the one-time Task 25 evaluation).
+- Use reproducible seeds; save configs and results for every new experiment.
+- Measure latency/size — never just assert "fast" or "tiny."
+- Clearly distinguish Hindi from Hinglish, and synthetic Hinglish from real
+  human Hinglish, everywhere this comes up.
+- If something genuinely can't be completed in this environment (no GPU, no
+  network, no HF deploy credentials), say so explicitly rather than skipping
+  silently or faking a result.

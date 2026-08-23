@@ -1,0 +1,186 @@
+{
+  "acoustic_baseline_large": {
+    "description": "47-dim hand-crafted acoustic features (pitch/energy/pause stats), logistic regression, larger 8000/2000 split",
+    "n_train": 8000,
+    "n_val": 2000,
+    "accuracy": 0.539,
+    "f1": 0.5074786324786325,
+    "precision": 0.5313199105145414,
+    "recall": 0.48568507157464214,
+    "confusion_matrix": [
+      [
+        603,
+        419
+      ],
+      [
+        503,
+        475
+      ]
+    ]
+  },
+  "acoustic_baseline_controlled": {
+    "description": "Same 54-dim acoustic features, evaluated on the identical 1600/400 split used for Whisper, to remove 'more data' as a confound",
+    "n_train": 1600,
+    "n_val": 400,
+    "accuracy": 0.5025,
+    "f1": 0.4884318766066838,
+    "precision": 0.472636815920398,
+    "recall": 0.5053191489361702,
+    "confusion_matrix": [
+      [
+        106,
+        106
+      ],
+      [
+        93,
+        95
+      ]
+    ]
+  },
+  "whisper_head_sweep": {
+    "logreg_C0.1": {
+      "cv_f1_mean": 0.7801564970416022,
+      "cv_f1_std": 0.00996017042319068,
+      "accuracy": 0.815,
+      "f1": 0.8131313131313131,
+      "precision": 0.7740384615384616,
+      "recall": 0.8563829787234043,
+      "confusion_matrix": [
+        [
+          165,
+          47
+        ],
+        [
+          27,
+          161
+        ]
+      ]
+    },
+    "logreg_C1": {
+      "cv_f1_mean": 0.7651798150153658,
+      "cv_f1_std": 0.03304370764308124,
+      "accuracy": 0.78,
+      "f1": 0.7743589743589744,
+      "precision": 0.7475247524752475,
+      "recall": 0.8031914893617021,
+      "confusion_matrix": [
+        [
+          161,
+          51
+        ],
+        [
+          37,
+          151
+        ]
+      ]
+    },
+    "logreg_C10": {
+      "cv_f1_mean": 0.7397187508869221,
+      "cv_f1_std": 0.041228946136822056,
+      "accuracy": 0.75,
+      "f1": 0.7435897435897436,
+      "precision": 0.7178217821782178,
+      "recall": 0.7712765957446809,
+      "confusion_matrix": [
+        [
+          155,
+          57
+        ],
+        [
+          43,
+          145
+        ]
+      ]
+    },
+    "svm_rbf_C1": {
+      "cv_f1_mean": 0.7357374124473426,
+      "cv_f1_std": 0.029906929993041773,
+      "accuracy": 0.7875,
+      "f1": 0.7890818858560794,
+      "precision": 0.7395348837209302,
+      "recall": 0.8457446808510638,
+      "confusion_matrix": [
+        [
+          156,
+          56
+        ],
+        [
+          29,
+          159
+        ]
+      ]
+    },
+    "svm_rbf_C5": {
+      "cv_f1_mean": 0.7537066722083272,
+      "cv_f1_std": 0.010770710064523254,
+      "accuracy": 0.8125,
+      "f1": 0.810126582278481,
+      "precision": 0.7729468599033816,
+      "recall": 0.851063829787234,
+      "confusion_matrix": [
+        [
+          165,
+          47
+        ],
+        [
+          28,
+          160
+        ]
+      ]
+    },
+    "mlp_64": {
+      "cv_f1_mean": 0.7396304784747132,
+      "cv_f1_std": 0.028654385269717583,
+      "accuracy": 0.7675,
+      "f1": 0.7657430730478589,
+      "precision": 0.7272727272727273,
+      "recall": 0.8085106382978723,
+      "confusion_matrix": [
+        [
+          155,
+          57
+        ],
+        [
+          36,
+          152
+        ]
+      ]
+    },
+    "mlp_32_16": {
+      "cv_f1_mean": 0.7267114669022532,
+      "cv_f1_std": 0.02033522712951793,
+      "accuracy": 0.7925,
+      "f1": 0.7866323907455013,
+      "precision": 0.7611940298507462,
+      "recall": 0.8138297872340425,
+      "confusion_matrix": [
+        [
+          164,
+          48
+        ],
+        [
+          35,
+          153
+        ]
+      ]
+    }
+  },
+  "selected_model": {
+    "head": "logreg_C0.1",
+    "cv_f1_mean": 0.7801564970416022,
+    "accuracy": 0.815,
+    "f1": 0.8131313131313131,
+    "precision": 0.7740384615384616,
+    "recall": 0.8563829787234043,
+    "confusion_matrix": [
+      [
+        165,
+        47
+      ],
+      [
+        27,
+        161
+      ]
+    ]
+  }
+}

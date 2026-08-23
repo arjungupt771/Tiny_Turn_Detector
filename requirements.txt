@@ -1,0 +1,27 @@
+# Core ML / data
+numpy
+scikit-learn
+joblib
+
+# Audio + Whisper encoder
+torch
+transformers
+librosa
+soundfile
+
+# Dataset access (only needed for src/create_experiment_manifest.py
+# and the extract_*_features.py scripts, i.e. re-running data prep)
+datasets
+tqdm
+
+# Demo app
+gradio
+
+# Tests
+pytest
+
+# Experiment/export extras (needed only for the corresponding scripts)
+PyYAML
+matplotlib
+onnx
+onnxruntime

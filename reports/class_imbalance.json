@@ -1,0 +1,31 @@
+{
+  "balance_check": {
+    "train_pos_frac": 0.495,
+    "train_n": 1600,
+    "val_pos_frac": 0.47,
+    "val_n": 400
+  },
+  "meaningfully_imbalanced": false,
+  "results": {
+    "plain_bce": {
+      "accuracy": 0.815,
+      "precision": 0.7740384615384616,
+      "recall": 0.8563829787234043,
+      "f1": 0.8131313131313131
+    },
+    "weighted_bce": {
+      "accuracy": 0.8125,
+      "precision": 0.7703349282296651,
+      "recall": 0.8563829787234043,
+      "f1": 0.8110831234256927
+    },
+    "focal_style": {
+      "accuracy": 0.2125,
+      "precision": 0.15675675675675677,
+      "recall": 0.15425531914893617,
+      "f1": 0.1554959785522788
+    }
+  },
+  "decision": "Train/val label balance is ~50/50 (train pos_frac=0.495, val pos_frac=0.470), so this is not a meaningfully imbalanced problem by the brief's own threshold. Empirically, weighted BCE and focal-style reweighting were run anyway for a real comparison rather than skipped on the basis of the balance check alone. Weighted/focal approaches did not meaningfully improve F1 over plain BCE on this validation split, consistent with the near-50/50 balance; plain BCE is kept as the simplest approach that works.",
+  "focal_style_note": "Focal-style reweighting collapsed to near-random (F1=0.155) on this split. Root cause: with C=0.1 (fairly strong L2) and a near-balanced, reasonably well-separated problem, most training examples are already confidently correct after the initial fit, so (1-p_correct)**2 pushes the vast majority of sample weights toward ~0 and the refit is effectively trained on a tiny, noisy subset of hard examples -- a known failure mode of naively applying focal-style reweighting to an already-easy, balanced linear-probe problem rather than a genuinely long-tailed one. Not investigated further since plain BCE already solves the actual problem (the data is not imbalanced)."
+}

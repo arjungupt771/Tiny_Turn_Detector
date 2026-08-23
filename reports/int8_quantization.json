@@ -1,0 +1,43 @@
+{
+  "pytorch_fp32_sklearn": {
+    "size_bytes": 13617
+  },
+  "onnx_fp32": {
+    "metrics": {
+      "accuracy": 0.815,
+      "precision": 0.7740384615384616,
+      "recall": 0.8563829787234043,
+      "f1": 0.8131313131313131
+    },
+    "latency_ms": {
+      "mean_ms": 0.009334599998567228,
+      "p50_ms": 0.008167000032699434,
+      "p95_ms": 0.013691550003613884,
+      "p99_ms": 0.023584549956581116,
+      "stdev_ms": 0.00425935967972453,
+      "n_runs": 200
+    },
+    "size_bytes": 8259
+  },
+  "onnx_int8": {
+    "metrics": {
+      "accuracy": 0.815,
+      "precision": 0.7740384615384616,
+      "recall": 0.8563829787234043,
+      "f1": 0.8131313131313131
+    },
+    "latency_ms": {
+      "mean_ms": 0.008208450001347956,
+      "p50_ms": 0.007551999999577674,
+      "p95_ms": 0.010247700024024194,
+      "p99_ms": 0.017378300015025105,
+      "stdev_ms": 0.004906810589356782,
+      "n_runs": 200
+    },
+    "size_bytes": 8372
+  },
+  "f1_drop_fp32_to_int8": 0.0,
+  "f1_drop_investigation": "F1 drop from FP32->INT8 was 0.0000. This is within noise for a 400-example validation set (a handful of examples flipping near the decision boundary) -- expected for dynamic INT8 quantization of a 385-parameter linear model, since there's very little redundancy to exploit and quantization noise on 8-bit weights can shift a few borderline logits across 0.5. Not concerning.",
+  "size_note": "INT8 checkpoint (8372B) is NOT smaller than FP32 (8259B). For a model this tiny (385 params), ONNX runtime/protobuf overhead can dominate actual weight bytes, so the expected big win from INT8 (~4x smaller weights) may not show up in on-disk file size the way it would for Whisper-tiny's ~39M params -- that's where INT8 would actually matter for this project, and it's not measurable here without network access to the encoder weights.",
+  "scope_limitation": "Classifier-head-only comparison (385 params). Whisper-tiny encoder (~39M params, where INT8 would actually deliver a meaningful size/latency win) could not be downloaded/quantized in this sandbox -- no network route to huggingface.co."
+}

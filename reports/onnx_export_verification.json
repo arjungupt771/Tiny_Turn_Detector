@@ -1,0 +1,16 @@
+{
+  "onnx_opset": 17,
+  "n_val_examples_checked": 400,
+  "max_abs_probability_diff_sklearn_vs_onnx": 6.886748851742119e-07,
+  "label_mismatches": 0,
+  "numerically_consistent": true,
+  "onnx_single_inference_latency_ms": {
+    "mean": 0.008327979998057344,
+    "median_p50": 0.006945500018673556,
+    "p95": 0.012205100031792399,
+    "p99": 0.029060709960049277,
+    "stdev": 0.005092387279887492,
+    "n_runs": 200
+  },
+  "note": "This is the classifier-head-only ONNX export and latency (StandardScaler + LogisticRegression, 385 params). It does not include Whisper-tiny encoder inference, which requires network access to huggingface.co that is not available in this sandbox."
+}

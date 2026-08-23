@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GBVH Digital Toolkit</title>
+
+<!-- Favicon --> 
+<link rel="icon" href="/static/favicon.ico?v=2" type="image/x-icon">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="/static/css/style_test.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Marked.js -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- HTML2PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+</head>
+<body>
+
+<!-- Header
+<header>
+    <h1>GBVH Digital Toolkit</h1>
+    <div style="display:flex; align-items:center; gap:0.75rem;">
+        <a href="/policy-library" class="new-analysis-btn" style="text-decoration:none;" title="Manage compliance frameworks">
+            <i data-lucide="library" size="20"></i>
+            Policy Library
+        </a>
+    </div>
+</header> -->
+
+<!-- Header -->
+<!-- Header -->
+<!-- Header -->
+<header>
+    <div class="header-brand">
+        <div class="logo-container">
+
+            <img
+                src="/static/logo.svg"
+                alt="Digital Toolkit / Private Sector Coalition Against GBVH"
+                class="logo"
+            >
+
+            <h1>GBVH Digital Toolkit</h1>
+
+        </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:0.75rem;">
+        <a href="/policy-library"
+           class="new-analysis-btn"
+           style="text-decoration:none;"
+           title="Manage compliance frameworks">
+            <i data-lucide="library" size="20"></i>
+            Policy Library
+        </a>
+    </div>
+</header>
+
+<!-- MODAL CONFIRMATION DIALOG -->
+<div id="confirmModal" class="modal-overlay">
+    <div class="modal-dialog">
+        <h2>Start New Analysis?</h2>
+        <p>Your current report, chat history, and uploaded document will be cleared. This action cannot be undone.</p>
+        <div class="modal-buttons">
+            <button id="cancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
+            <button id="confirmBtn" class="modal-btn modal-btn-confirm">Start New Analysis</button>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+
+    <!-- Left Column -->
+    <div class="chat-column">
+
+        <div class="chat-container">
+
+            <div class="chat-header">
+                <!-- <i data-lucide="message-circle" size="20"></i> -->
+                GBVH Chatbot
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message-wrapper assistant">
+                    <div class="assistant-message">
+                        👋 Welcome to the GBVH Chatbot.
+                        <br><br>
+                        To get started:
+                        <ul>
+                            <li>Upload a document.</li>
+                            <li>Enter the prompt with policy name.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        <!-- <div class="chat-input-section">
+
+            
+            <input
+                type="file"
+                id="pdfFile"
+                accept=".pdf,.doc,.docx"
+                hidden>
+
+            <div class="chat-toolbar">
+
+                <button
+                    id="uploadBtn"
+                    class="toolbar-icon-btn"
+                    title="Upload Document">
+                    <i data-lucide="paperclip"></i>
+                </button>
+
+                <input
+                    id="chatInput"
+                    type="text"
+                    placeholder="Ask a question or upload a compliance document...">
+
+                <button
+                    id="sendBtn"
+                    class="toolbar-send-btn">
+                    <i data-lucide="send" size="18"></i>
+                </button>
+
+            </div>
+
+        </div> -->
+
+        <div class="chat-input-section">
+
+            <input
+                type="file"
+                id="pdfFile"
+                accept=".pdf,.doc,.docx"
+                multiple
+                hidden
+            >
+
+            <!-- Uploaded file -->
+            <div
+                id="uploadedFileBox"
+                class="uploaded-file-box"
+                style="display:none;">
+
+                <div class="uploaded-file-info">
+                    <!-- <span class="uploaded-file-label">
+                        Uploaded file
+                    </span> -->
+
+                    <span
+                        id="uploadedFileName"
+                        class="uploaded-file-name">
+                    </span>
+                </div>
+
+                <button
+                    type="button"
+                    id="removeUploadedFile"
+                    class="remove-file-btn">
+                    ×
+                </button>
+                
+
+            </div>
+
+            <!-- SAME STRUCTURE AS FIRST -->
+            <div class="chat-toolbar">
+
+                <button
+                    type="button"
+                    id="uploadBtn"
+                    class="toolbar-icon-btn"
+                    title="Upload Document">
+
+                    <i data-lucide="paperclip"></i>
+
+                </button>
+
+                <input
+                    id="chatInput"
+                    type="text"
+                    placeholder="Ask a question or upload a compliance document..."
+                >
+
+                <button
+                    type="button"
+                    id="sendBtn"
+                    class="toolbar-send-btn">
+
+                    <i data-lucide="send" size="18"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- <div class="chat-input-section">
+
+            <input
+                type="file"
+                id="pdfFile"
+                accept=".pdf,.doc,.docx"
+                multiple
+                hidden
+            >
+
+            <div
+                id="uploadedFileBox"
+                class="uploaded-file-box"
+                style="display:none;">
+
+                <div class="uploaded-file-info">
+                    <span class="uploaded-file-label">
+                        Uploaded file
+                    </span>
+
+                    <span
+                        id="uploadedFileName"
+                        class="uploaded-file-name">
+                    </span>
+                </div>
+
+                <button
+                    type="button"
+                    id="removeUploadedFile"
+                    class="remove-file-btn">
+                    ×
+                </button>
+
+            </div>
+
+            <div class="chat-input-wrapper">
+
+                <button
+                    type="button"
+                    id="uploadBtn"
+                    class="attach-btn">
+                    +
+                </button>
+
+                <input
+                    type="text"
+                    id="chatInput"
+                    class="message-input"
+                    placeholder="Ask"
+                >
+
+                <button
+                    type="button"
+                    id="sendBtn"
+                    class="send-btn">
+                    Send
+                </button>
+
+            </div>
+
+        </div> -->
+
+                <!-- Message composer
+                <div class="chat-input-wrapper">
+
+                    <button
+                        type="button"
+                        id="uploadBtn"
+                        class="attach-btn"
+                        title="Upload Document">
+                        +
+                    </button>
+
+                    <input
+                        type="text"
+                        id="chatInput"
+                        class="message-input"
+                        placeholder="Ask">
+
+                    <button
+                        type="button"
+                        id="sendBtn"
+                        class="send-btn">
+                        Send
+                    </button>
+
+                </div> -->
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Report Section (Hidden) -->
+<div class="report-section" id="reportSection">
+    <div id="output" class="markdown-body"></div>
+</div>
+
+<!-- Report Modal -->
+<div class="report-modal-overlay" id="reportModalOverlay">
+    <div class="report-modal-window" id="reportModalWindow">
+        <div class="report-modal-header">
+            <h2 id="reportModalTitle">Report Viewer</h2>
+            <button class="report-modal-close-btn" id="reportModalCloseBtn" aria-label="Close">&times;</button>
+        </div>
+        <div class="report-modal-content" id="reportModalContent"></div>
+        <div class="report-modal-resize-handle" id="reportModalResizeHandle"></div>
+    </div>
+</div>
+
+
+<script>
+let sessionId = null;
+let analysisCompleted = false;
+let uiState = "empty";
+
+// Initialize Icons
+lucide.createIcons();
+
+const fileInput = document.getElementById("pdfFile");
+const output = document.getElementById("output");
+const reportSection = document.getElementById("reportSection");
+const chatInput = document.getElementById("chatInput");
+const sendBtn = document.getElementById("sendBtn");
+const chatMessages = document.getElementById("chatMessages");
+const reportsList = document.getElementById("reportsList");
+const actionStatus = document.getElementById("actionStatus");
+const confirmModal = document.getElementById("confirmModal");
+const cancelBtn = document.getElementById("cancelBtn");
+const confirmBtn = document.getElementById("confirmBtn");
+const uploadBtn = document.getElementById("uploadBtn");
+
+let uploadedFilenames = [];
+let uploadId = null;
+let chatHistory = []; 
+
+let documentsData = [];     
+let overallSummary = "";
+let overallAlignment = null;
+let overallPdfPath = "";
+
+function persistChatHistory() {
+    sessionStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+}
+
+function persistReports() {
+    sessionStorage.setItem("documentsData", JSON.stringify(documentsData));
+    sessionStorage.setItem("overallSummary", overallSummary);
+    sessionStorage.setItem("overallAlignment", overallAlignment === null ? "" : String(overallAlignment));
+    sessionStorage.setItem("overallPdfPath", overallPdfPath);
+}
+
+function downloadPdf(pdfPath, downloadName) {
+    return (async () => {
+        const response = await fetch("/download-pdf", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ pdf_path: pdfPath, download_name: downloadName })
+        });
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = downloadName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    })();
+}
+
+function getComplianceBadge(score){
+    if(score === null) return `<span class="badge badge-neutral">Unknown</span>`;
+    if(score >= 85) return `<span class="badge badge-success">High Compliance</span>`;
+    if(score >= 70) return `<span class="badge badge-warning">Moderate Compliance</span>`;
+    return `<span class="badge badge-danger">Needs Improvement</span>`;
+}
+
+function appendReportCards() {
+    documentsData.forEach(doc => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "message-wrapper assistant";
+        wrapper.innerHTML = `
+        <div class="assistant-message">
+            <div class="chat-report-card">
+                <div class="report-top">
+                    <div class="report-icon"><i data-lucide="file-text"></i></div>
+                    <div class="report-info">
+                        <h3>${doc.filename}</h3>
+                        <div class="report-framework">Best match: ${doc.policy || "Framework Not Detected"}</div>
+                    </div>
+                    <div class="report-score">${doc.alignment !== null ? doc.alignment + "%" : "N/A"}</div>
+                </div>
+                <div class="report-status">${getComplianceBadge(doc.alignment)}</div>
+                <div class="chat-report-buttons">
+                    <button class="btn btn-secondary view-btn"><i data-lucide="file-text"></i> View Report</button>
+                    <button class="btn btn-primary download-btn"><i data-lucide="download"></i> Download PDF</button>
+                </div>
+            </div>
+        </div>`;
+
+        wrapper.querySelector(".view-btn").onclick = () => openReportModal(doc.filename, doc.report);
+        wrapper.querySelector(".download-btn").onclick = () => downloadPdf(doc.pdf_path, `${doc.filename.replace(/\.[^/.]+$/, "")}_Compliance_Report.pdf`);
+        chatMessages.appendChild(wrapper);
+    });
+
+    lucide.createIcons();
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+uploadBtn.addEventListener("click", () => fileInput.click());
+fileInput.addEventListener('change', handleFiles);
+
+// function updateComposer(state) {
+//     uiState = state;
+//     switch (state) {
+//         case "empty":
+//             uploadBtn.disabled = false;
+//             chatInput.disabled = false;
+//             sendBtn.disabled = false;
+//             chatInput.placeholder = "Ask a question or upload a compliance document...";
+//             break;
+//         case "uploaded":
+//             uploadBtn.disabled = false;
+//             chatInput.disabled = false;
+//             sendBtn.disabled = false;
+//             chatInput.placeholder = uploadedFilenames.length > 1
+//                 ? `${uploadedFilenames.length} documents ready`
+//                 : `Document: ${uploadedFilenames[0] || ""}`;
+//             break;
+//         case "generating":
+//             uploadBtn.disabled = true;
+//             chatInput.disabled = true;
+//             sendBtn.disabled = true;
+//             break;
+//         case "ready":
+//             uploadBtn.disabled = true;
+//             chatInput.disabled = false;
+//             sendBtn.disabled = false;
+//             chatInput.placeholder = "Ask a question about the report...";
+//             uploadBtn.style.opacity = "0.5";
+//             uploadBtn.style.cursor = "not-allowed";
+//             uploadBtn.title = "Start a new analysis to upload another document.";
+//             break;
+//     }
+// }
+
+function updateComposer(state) {
+
+    const uploadedFileBox = document.getElementById("uploadedFileBox");
+    const uploadedFileName = document.getElementById("uploadedFileName");
+
+    if (state === "uploaded") {
+
+        uploadedFileBox.style.display = "flex";
+
+        if (uploadedFilenames && uploadedFilenames.length > 0) {
+            uploadedFileName.textContent = uploadedFilenames.join(", ");
+        }
+
+    } else {
+
+        uploadedFileBox.style.display = "none";
+        uploadedFileName.textContent = "";
+    }
+}
+
+// 👇 ADD THIS AFTER updateComposer()
+// document
+//     .getElementById("removeUploadedFile")
+//     .addEventListener("click", () => {
+
+//         uploadId = null;
+//         uploadedFilenames = [];
+
+//         sessionStorage.removeItem("uploadId");
+//         sessionStorage.removeItem("uploadedFilenames");
+
+//         updateComposer("empty");
+//     });
+
+document
+    .getElementById("removeUploadedFile")
+    .addEventListener("click", async () => {
+
+        try {
+            const response = await fetch("/remove-uploaded-file", {
+                method: "DELETE"
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                console.error(
+                    "Failed to remove uploaded file:",
+                    data.message || "Unknown error"
+                );
+                return;
+            }
+
+            // Clear frontend state
+            uploadId = null;
+            uploadedFilenames = [];
+
+            // Clear session storage
+            sessionStorage.removeItem("uploadId");
+            sessionStorage.removeItem("uploadedFilenames");
+
+            // Reset composer
+            updateComposer("normal");
+
+        } catch (error) {
+            console.error(
+                "Error removing uploaded file:",
+                error
+            );
+        }
+    });
+
+function handleFiles() {
+    if (!fileInput.files.length) return;
+    uploadDocument();
+}
+
+async function uploadDocument() {
+    if (fileInput.files.length === 0) return;
+
+    const names = Array.from(fileInput.files).map(f => f.name);
+    // appendMessage("user", names.map(n => `📄 ${n}`).join("<br>"));
+
+    const formData = new FormData();
+    for (const file of fileInput.files) {
+        formData.append("files", file);
+    }
+
+    reportSection.classList.remove('active');
+
+    try {
+        const response = await fetch("/upload", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+            return;
+        }
+
+        uploadId = data.upload_id;
+        uploadedFilenames = data.filenames;
+
+        sessionStorage.setItem("uploadId", uploadId);
+        sessionStorage.setItem(
+            "uploadedFilenames",
+            JSON.stringify(uploadedFilenames)
+        );
+
+        updateComposer("uploaded");
+
+    } catch (err) {
+
+        console.error(err);
+
+    } finally {
+
+        fileInput.value = "";
+    }
+
+    // try {
+    //     const response = await fetch("/upload", { method: "POST", body: formData });
+    //     const data = await response.json();
+
+    //     if (!data.success) {
+    //         // appendMessage("assistant", `❌ ${data.message || "Upload failed."}`);
+    //         return;
+    //     }
+
+    //     uploadId = data.upload_id;
+    //     uploadedFilenames = data.filenames;
+    //     sessionStorage.setItem("uploadId", uploadId);
+    //     sessionStorage.setItem("uploadedFilenames", JSON.stringify(uploadedFilenames));
+
+    //     let msg = `Uploaded ${data.filenames.length} document(s) successfully.`;
+    //     if (data.rejected_files && data.rejected_files.length) {
+    //         msg += `<br>⚠️ Skipped unsupported file(s): ${data.rejected_files.join(", ")}`;
+    //     }
+
+    //     // appendMessage("assistant", msg);
+    //     updateComposer("uploaded");
+
+    // } catch (err) {
+    //     console.error(err);
+    //     // appendMessage("assistant", "Failed to upload the document(s). Please try again.");
+    // } finally {
+    //     fileInput.value = "";
+    // }
+}
+
+// REPORT MODAL FUNCTIONS
+function openReportModal(title, markdownText) {
+    const reportModalOverlay = document.getElementById("reportModalOverlay");
+    const reportModalContent = document.getElementById("reportModalContent");
+    const reportModalTitle = document.getElementById("reportModalTitle");
+
+    reportModalTitle.textContent = title || "Report Viewer";
+    reportModalContent.innerHTML = marked.parse(markdownText || "");
+    reportModalOverlay.classList.add("active");
+    document.body.style.overflow = "hidden"; 
+}
+
+function closeReportModal() {
+    const reportModalOverlay = document.getElementById("reportModalOverlay");
+    reportModalOverlay.classList.remove("active");
+    document.body.style.overflow = ""; 
+}
+
+function initReportModalHandlers() {
+    const reportModalOverlay = document.getElementById("reportModalOverlay");
+    const reportModalCloseBtn = document.getElementById("reportModalCloseBtn");
+    
+    reportModalCloseBtn.addEventListener("click", closeReportModal);
+    reportModalOverlay.addEventListener("click", function(e) {
+        if (e.target === reportModalOverlay) closeReportModal();
+    });
+    
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape" && reportModalOverlay.classList.contains("active")) closeReportModal();
+    });
+}
+
+function appendMessage(role, message, persist = true) {
+    const div = document.createElement("div");
+    div.className = "message-wrapper " + role;
+    
+    const msgDiv = document.createElement("div");
+    msgDiv.className = role + "-message";
+    msgDiv.innerHTML = marked.parse(message);
+    
+    div.appendChild(msgDiv);
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    if (persist) {
+        chatHistory.push({ role, message });
+        persistChatHistory();
+    }
+}
+
+// upload file with msg
+
+function appendUserMessageWithFile(message, filenames = []) {
+
+    // --------------------------------
+    // 1. Add file bubble only if file exists
+    // --------------------------------
+    if (filenames && filenames.length > 0) {
+
+        const fileWrapper = document.createElement("div");
+        fileWrapper.className = "message-wrapper user";
+
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "user-file-message";
+
+        fileDiv.innerHTML = `
+            <div class="user-file-icon">📄</div>
+
+            <div class="user-file-name">
+                ${filenames.join(", ")}
+            </div>
+        `;
+
+        fileWrapper.appendChild(fileDiv);
+        chatMessages.appendChild(fileWrapper);
+    }
+
+
+    // --------------------------------
+    // 2. Add user query in separate bubble
+    // --------------------------------
+
+    const queryWrapper = document.createElement("div");
+    queryWrapper.className = "message-wrapper user";
+
+    const queryDiv = document.createElement("div");
+    queryDiv.className = "user-message";
+
+    queryDiv.innerHTML = marked.parse(message);
+
+    queryWrapper.appendChild(queryDiv);
+    chatMessages.appendChild(queryWrapper);
+
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+
+    // --------------------------------
+    // 3. Save chat history
+    // --------------------------------
+
+    chatHistory.push({
+        role: "user",
+        message: message,
+        filenames: filenames
+    });
+
+    persistChatHistory();
+}
+
+
+function showTyping() {
+    const div = document.createElement("div");
+    div.id = "typing";
+    div.className = "message-wrapper assistant";
+    
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "assistant-message";
+    msgDiv.innerHTML = "Typing...";
+    
+    div.appendChild(msgDiv);
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function hideTyping() {
+    const typing = document.getElementById("typing");
+    if(typing) typing.remove();
+}
+
+
+// FIXED SEND BUTTON HANDLER
+// sendBtn.onclick = async function() {
+//     const message = chatInput.value.trim();
+
+//     if (message === "") return;
+
+//     sendBtn.disabled = true;
+//     appendMessage("user", message);
+//     chatInput.value = "";
+//     showTyping();
+
+sendBtn.onclick = async function() {
+
+    const message = chatInput.value.trim();
+
+    if (message === "") return;
+
+    sendBtn.disabled = true;
+
+
+    // --------------------------------
+    // Capture file for THIS prompt only
+    // --------------------------------
+
+    const currentFiles = [...uploadedFilenames];
+
+
+    // --------------------------------
+    // Show file + prompt
+    // --------------------------------
+
+    appendUserMessageWithFile(
+        message,
+        currentFiles
+    );
+
+
+    // --------------------------------
+    // File should NOT be attached
+    // to the next prompt
+    // --------------------------------
+
+    uploadedFilenames = [];
+
+    sessionStorage.removeItem("uploadedFilenames");
+
+
+    // --------------------------------
+    // Clear input
+    // --------------------------------
+
+    chatInput.value = "";
+
+
+    // --------------------------------
+    // Hide file from composer
+    // --------------------------------
+
+    updateComposer("empty");
+
+
+    // --------------------------------
+    // Show typing
+    // --------------------------------
+
+    showTyping();
+
+    try {
+
+        const response = await fetch("/chat", {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                session_id: sessionId,
+                message: message
+            })
+        });
+
+        const data = await response.json();
+
+        hideTyping();
+
+        // KEEP YOUR EXISTING RESPONSE CODE HERE
+        if (data.success) {
+
+            // --------------------------------
+            // Format assistant response
+            // --------------------------------
+
+            let assistantMessage = data.answer
+                .replace(/\n/g, "<br>• ");
+
+            assistantMessage = assistantMessage.replace(
+                /(<br>• [^<]+)/g,
+                "$1."
+            );
+
+            console.log(assistantMessage);
+
+
+            // --------------------------------
+            // Display assistant response FIRST
+            // --------------------------------
+
+            // appendMessage(
+            //     "assistant",
+            //     assistantMessage,
+            //     true
+            // );
+
+
+            // --------------------------------
+            // Add report download link
+            // --------------------------------
+
+            const report = data.gen_report;
+
+            const hasReport =
+                report &&
+                report.path &&
+                report.name &&
+                report.path !== "null" &&
+                report.name !== "null";
+
+
+            if (hasReport) {
+
+                // --------------------------------
+                // Report exists → render Markdown
+                // --------------------------------
+
+                const assistantMessage = marked.parse(data.answer);
+
+                appendMessage(
+                    "assistant",
+                    assistantMessage,
+                    true
+                );
+
+
+                const url =
+                    `/download-pdf?pdf_path=${encodeURIComponent(report.path)}` +
+                    `&download_name=${encodeURIComponent(report.name)}`;
+
+
+                // Get latest assistant message
+                const assistantMessages =
+                    document.querySelectorAll(".assistant-message");
+
+                const lastMessage =
+                    assistantMessages[assistantMessages.length - 1];
+
+
+                if (lastMessage) {
+
+                    const lineBreak1 =
+                        document.createElement("br");
+
+                    const lineBreak2 =
+                        document.createElement("br");
+
+
+                    const downloadLink =
+                        document.createElement("a");
+
+                    downloadLink.href = url;
+
+                    downloadLink.target = "_blank";
+
+                    downloadLink.className =
+                        "chat-download-link";
+
+                    downloadLink.textContent =
+                        "📄 Download AI Generated Report";
+
+
+                    lastMessage.appendChild(lineBreak1);
+                    lastMessage.appendChild(lineBreak2);
+
+                    // Download report link
+                    // lastMessage.appendChild(downloadLink);
+                }
+
+            } else {
+
+                // --------------------------------
+                // No report → show simple text
+                // --------------------------------
+
+                const assistantMessage =
+                    data.answer
+                        .replace(/^#{1,6}\s*/gm, "")
+                        .replace(/\*\*(.*?)\*\*/g, "$1")
+                        .replace(/^\s*[-*]\s+/gm, "• ")
+                        .replace(/^\s*\d+\.\s+/gm, "")
+                        .replace(/\n/g, "<br>");
+
+                appendMessage(
+                    "assistant",
+                    assistantMessage,
+                    true
+                );
+            }
+
+        } else {
+
+            // --------------------------------
+            // API returned success: false
+            // --------------------------------
+
+            appendMessage(
+                "assistant",
+                data.message || "An error occurred."
+            );
+        }
+        // Remove uploaded file ONLY if this query used a file
+        if (currentFiles.length > 0) {
+            try {
+                await fetch("/remove-uploaded-file", {
+                    method: "DELETE"
+                });
+
+                // Clear frontend file state
+                uploadedFilenames = [];
+                uploadId = null;
+
+                sessionStorage.removeItem("uploadedFilenames");
+                sessionStorage.removeItem("uploadId");
+
+            } catch (error) {
+                console.error("Failed to remove uploaded file:", error);
+            }
+        }
+
+    } catch (error) {
+
+        console.error("Chat error:", error);
+
+        hideTyping();
+
+        appendMessage(
+            "assistant",
+            "Unable to contact server."
+        );
+
+    } finally {
+
+        sendBtn.disabled = false;
+    }
+};
+
+chatInput.addEventListener("keypress", function(e) {
+    if(e.key === "Enter") {
+        sendBtn.click();
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    initReportModalHandlers();
+    updateComposer("empty");
+});
+</script>
+</body>
+</html>

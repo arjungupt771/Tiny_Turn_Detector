@@ -1,0 +1,89 @@
+{
+  "scope": "Frozen Whisper-tiny mean-pool + StandardScaler + LogisticRegression baseline, evaluated on the 400-example cached validation split (data/whisper_features/X_val.npy, y_val.npy). Uses only the already-extracted 384-dim feature vectors and the already-trained sklearn pipeline -- no Whisper encoder forward pass required, so this task was not blocked by the sandbox's lack of huggingface.co access.",
+  "n_val_examples": 400,
+  "uncalibrated": {
+    "brier_score": 0.12707176180437654,
+    "ece": 0.046872184923785344,
+    "mean_predicted": [
+      0.03385927245264917,
+      0.1502774473804103,
+      0.2576139000702255,
+      0.338301006218187,
+      0.45116272674161423,
+      0.5540629748678738,
+      0.6583592721333142,
+      0.756219161983922,
+      0.8606816079164877,
+      0.9475826888249684
+    ],
+    "fraction_positive": [
+      0.02127659574468085,
+      0.034482758620689655,
+      0.3333333333333333,
+      0.34615384615384615,
+      0.36,
+      0.5185185185185185,
+      0.65625,
+      0.52,
+      0.8947368421052632,
+      0.9253731343283582
+    ],
+    "bin_counts": [
+      94,
+      29,
+      18,
+      26,
+      25,
+      27,
+      32,
+      25,
+      57,
+      67
+    ]
+  },
+  "temperature_scaling": {
+    "method": "Single-parameter temperature scaling: p = sigmoid(logit / T), T fit by minimizing validation NLL (scipy bounded scalar minimization, bounds=[0.05, 20.0]). Fit and evaluated on validation only -- the official test set was not touched.",
+    "temperature": 1.001024688960411,
+    "brier_score": 0.12707002861591313,
+    "ece": 0.047375119448356436,
+    "mean_predicted": [
+      0.03395641186027267,
+      0.1504991613726865,
+      0.25781950034205,
+      0.3384539840012663,
+      0.45121196671663827,
+      0.5540084594150375,
+      0.6582090239397662,
+      0.756007662367293,
+      0.8611401004374584,
+      0.9481657864068883
+    ],
+    "fraction_positive": [
+      0.02127659574468085,
+      0.034482758620689655,
+      0.3333333333333333,
+      0.34615384615384615,
+      0.36,
+      0.5185185185185185,
+      0.65625,
+      0.52,
+      0.896551724137931,
+      0.9242424242424242
+    ],
+    "bin_counts": [
+      94,
+      29,
+      18,
+      26,
+      25,
+      27,
+      32,
+      25,
+      58,
+      66
+    ],
+    "brier_improvement": 1.7331884634153027e-06,
+    "ece_improvement": -0.0005029345245710914
+  },
+  "conclusion": "T = 1.001. T is close to 1, meaning the uncalibrated probabilities were already reasonably well-calibrated on this validation set. ECE moved from 0.0469 to 0.0474 (did not improve), Brier score moved from 0.1271 to 0.1271 (improved)."
+}

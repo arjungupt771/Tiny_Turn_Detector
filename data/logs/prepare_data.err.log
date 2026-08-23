@@ -1,0 +1,32 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Traceback (most recent call last):
+  File "C:\Users\Dell\OneDrive\Desktop\Audio_ml_model\scripts\prepare_data.py", line 70, in <module>
+    if __name__ == "__main__": main()
+                               ^^^^^^
+  File "C:\Users\Dell\OneDrive\Desktop\Audio_ml_model\scripts\prepare_data.py", line 59, in main
+    train_all = collect("pipecat-ai/smart-turn-data-v3.2-train", "train", args.train_size + args.val_size, args.seed, args.sequential, not args.metadata_only)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dell\OneDrive\Desktop\Audio_ml_model\scripts\prepare_data.py", line 40, in collect
+    for sample in stream:
+                  ^^^^^^
+  File "C:\Users\Dell\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\site-packages\datasets\iterable_dataset.py", line 2840, in __iter__
+    for key, example in ex_iterable:
+                        ^^^^^^^^^^^
+  File "C:\Users\Dell\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\site-packages\datasets\iterable_dataset.py", line 2374, in __iter__
+    batch = formatter.format_batch(pa_table)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dell\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\site-packages\datasets\formatting\formatting.py", line 488, in format_batch
+    batch = self.python_features_decoder.decode_batch(batch)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dell\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\site-packages\datasets\formatting\formatting.py", line 250, in decode_batch
+    return self.features.decode_batch(batch, token_per_repo_id=self.token_per_repo_id) if self.features else batch
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dell\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\site-packages\datasets\features\features.py", line 2273, in decode_batch
+    decode_nested_example(self[column_name], value, token_per_repo_id=token_per_repo_id)
+  File "C:\Users\Dell\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\site-packages\datasets\features\features.py", line 1524, in decode_nested_example
+    return schema.decode_example(obj, token_per_repo_id=token_per_repo_id) if obj is not None else None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dell\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\site-packages\datasets\features\audio.py", line 186, in decode_example
+    raise ImportError("To support decoding audio data, please install 'torchcodec'.")
+ImportError: To support decoding audio data, please install 'torchcodec'.
+'Server disconnected without sending a response.' thrown while requesting GET https://huggingface.co/datasets/pipecat-ai/smart-turn-data-v3.2-train/resolve/e564e2ac567f774d1880aa1db6ce97afb8c519b7/data/train-00000-of-00083.parquet

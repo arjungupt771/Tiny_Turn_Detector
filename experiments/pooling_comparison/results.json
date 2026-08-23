@@ -1,0 +1,38 @@
+[
+  {
+    "pooling": "mean",
+    "accuracy": 0.81,
+    "precision": 0.7666666666666667,
+    "recall": 0.8563829787234043,
+    "f1": 0.8090452261306532,
+    "train_time_seconds": 25.024371117000555,
+    "device": "cuda"
+  },
+  {
+    "pooling": "max",
+    "accuracy": 0.5175,
+    "precision": 0.4932249322493225,
+    "recall": 0.9680851063829787,
+    "f1": 0.6535008976660682,
+    "train_time_seconds": 24.39097049100019,
+    "device": "cuda"
+  },
+  {
+    "pooling": "last",
+    "accuracy": 0.47,
+    "precision": 0.47,
+    "recall": 1.0,
+    "f1": 0.6394557823129252,
+    "train_time_seconds": 24.77501113100152,
+    "device": "cuda"
+  },
+  {
+    "pooling": "attention",
+    "accuracy": 0.8875,
+    "precision": 0.8592964824120602,
+    "recall": 0.9095744680851063,
+    "f1": 0.8837209302325582,
+    "train_time_seconds": 26.07198775299912,
+    "device": "cuda"
+  }
+]

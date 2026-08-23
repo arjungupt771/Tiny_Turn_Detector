@@ -1,0 +1,34 @@
+{
+  "scope": "Architecturally-identical whisper-tiny ENCODER, random weights (see export_encoder_onnx.py docstring -- huggingface.co unreachable). Size and latency are real and weight-independent; output-difference numbers below reflect quantization noise on RANDOM weights, not real-world accuracy impact -- no F1/accuracy claim is made for the encoder. Compare against reports/int8_quantization.json for the classifier head, which DOES have real accuracy numbers.",
+  "onnx_fp32": {
+    "total_size_bytes": 32927667,
+    "total_size_mb": 31.4,
+    "latency_ms": {
+      "mean_ms": 331.9419013400023,
+      "p50_ms": 330.7244415000241,
+      "p95_ms": 346.8743018999817,
+      "p99_ms": 355.1530444399976,
+      "stdev_ms": 7.636060681235248,
+      "n_runs": 100
+    }
+  },
+  "onnx_int8": {
+    "total_size_bytes": 8269031,
+    "total_size_mb": 7.89,
+    "latency_ms": {
+      "mean_ms": 278.99826642000335,
+      "p50_ms": 278.1314580000185,
+      "p95_ms": 290.8620882000207,
+      "p99_ms": 293.00600510997134,
+      "stdev_ms": 5.721365884117046,
+      "n_runs": 100
+    }
+  },
+  "size_reduction_pct": 74.9,
+  "output_difference_on_random_weights": {
+    "max_abs_diff": 0.05034357309341431,
+    "mean_abs_diff": 0.008395862765610218,
+    "note": "This is a hidden-state-level numerical difference from dynamic INT8 weight quantization, measured on random weights purely to confirm the quantized graph runs and produces finite, structurally-consistent output -- it is NOT a classification accuracy/F1 number and should not be read as one."
+  },
+  "conclusion": "Unlike the 385-parameter classifier head (where INT8 did not shrink the file because runtime/protobuf overhead dominates), the 8,208,384-parameter encoder shows a real 74.9% size reduction from dynamic INT8 quantization -- this is the regime where INT8 actually delivers the expected ~4x weight-size win, confirming the earlier hypothesis in reports/int8_quantization.json's size_note. Latency improvement from INT8 on CPU depends on onnxruntime's kernel support and is reported above rather than assumed."
+}

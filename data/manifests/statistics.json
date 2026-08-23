@@ -1,0 +1,146 @@
+{
+  "seed": 42,
+  "train": {
+    "samples": 1600,
+    "labels": {
+      "0": 826,
+      "1": 774
+    },
+    "languages": {
+      "fra": 73,
+      "dan": 46,
+      "por": 86,
+      "nld": 70,
+      "eng": 394,
+      "jpn": 38,
+      "deu": 69,
+      "rus": 69,
+      "vie": 49,
+      "ita": 41,
+      "ukr": 42,
+      "ind": 49,
+      "spa": 112,
+      "ara": 43,
+      "kor": 46,
+      "ben": 38,
+      "hin": 69,
+      "zho": 35,
+      "tur": 43,
+      "pol": 41,
+      "mar": 40,
+      "nor": 56,
+      "fin": 51
+    },
+    "midfiller": {
+      "True": 652,
+      "False": 615,
+      "None": 333
+    },
+    "endfiller": {
+      "True": 411,
+      "False": 856,
+      "None": 333
+    },
+    "synthetic": {
+      "True": 1309,
+      "False": 291
+    }
+  },
+  "validation": {
+    "samples": 400,
+    "labels": {
+      "0": 207,
+      "1": 193
+    },
+    "languages": {
+      "deu": 19,
+      "vie": 14,
+      "eng": 93,
+      "por": 15,
+      "spa": 23,
+      "nld": 24,
+      "kor": 17,
+      "ukr": 9,
+      "rus": 12,
+      "nor": 12,
+      "fra": 19,
+      "hin": 14,
+      "ben": 15,
+      "ita": 13,
+      "fin": 10,
+      "ara": 15,
+      "mar": 10,
+      "pol": 10,
+      "ind": 9,
+      "tur": 13,
+      "dan": 9,
+      "zho": 12,
+      "jpn": 13
+    },
+    "midfiller": {
+      "True": 147,
+      "False": 168,
+      "None": 85
+    },
+    "endfiller": {
+      "False": 211,
+      "None": 85,
+      "True": 104
+    },
+    "synthetic": {
+      "True": 325,
+      "False": 75
+    }
+  },
+  "test": {
+    "samples": 2000,
+    "labels": {
+      "0": 1018,
+      "1": 982
+    },
+    "languages": {
+      "eng": 499,
+      "zho": 56,
+      "deu": 84,
+      "nld": 74,
+      "ind": 72,
+      "ukr": 67,
+      "por": 100,
+      "ita": 57,
+      "fin": 62,
+      "rus": 109,
+      "fra": 78,
+      "kor": 62,
+      "spa": 103,
+      "mar": 42,
+      "pol": 67,
+      "ben": 47,
+      "tur": 59,
+      "nor": 71,
+      "vie": 53,
+      "hin": 79,
+      "jpn": 59,
+      "dan": 50,
+      "ara": 50
+    },
+    "midfiller": {
+      "False": 781,
+      "True": 799,
+      "None": 420
+    },
+    "endfiller": {
+      "True": 559,
+      "False": 1021,
+      "None": 420
+    },
+    "synthetic": {
+      "True": 1634,
+      "False": 366
+    }
+  },
+  "datasets": {
+    "train_validation": "pipecat-ai/smart-turn-data-v3.2-train",
+    "test": "pipecat-ai/smart-turn-data-v3.2-test"
+  },
+  "audio_validation": "Performed during feature extraction, not manifest creation."
+}

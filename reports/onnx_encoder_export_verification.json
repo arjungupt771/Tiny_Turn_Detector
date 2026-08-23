@@ -1,0 +1,32 @@
+{
+  "scope": "Architecturally-identical whisper-tiny ENCODER with RANDOM weights (huggingface.co unreachable in this sandbox -- see module docstring). Verifies export mechanics, numerical parity, size, and latency, which are weight-value-independent. Does NOT verify or claim any accuracy/F1 number for the encoder or the full pipeline.",
+  "onnx_opset": 17,
+  "input_shape": [
+    1,
+    80,
+    3000
+  ],
+  "max_abs_diff_pytorch_vs_onnx": 2.175569534301758e-06,
+  "numerically_consistent": true,
+  "onnx_graph_file_bytes": 28595,
+  "onnx_external_weights_data_bytes": 32899072,
+  "onnx_total_file_size_bytes": 32927667,
+  "onnx_total_file_size_mb": 31.4,
+  "note_on_external_data": "PyTorch's dynamo-based ONNX exporter stores large weight tensors in a separate '<model>.onnx.data' file alongside the small graph/metadata '.onnx' file; both must ship together and their sizes are summed above.",
+  "pytorch_fp32_latency_ms": {
+    "mean_ms": 345.5243697100024,
+    "p50_ms": 343.3005614999729,
+    "p95_ms": 364.0921385000354,
+    "p99_ms": 381.6368109100313,
+    "stdev_ms": 10.383205002889712,
+    "n_runs": 100
+  },
+  "onnxruntime_fp32_latency_ms": {
+    "mean_ms": 341.07757679999855,
+    "p50_ms": 339.7543455000118,
+    "p95_ms": 359.56449829997723,
+    "p99_ms": 365.9489598700886,
+    "stdev_ms": 10.52695441080812,
+    "n_runs": 100
+  }
+}

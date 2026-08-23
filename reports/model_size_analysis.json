@@ -1,0 +1,42 @@
+{
+  "classifier_head": {
+    "architecture": "StandardScaler(384) -> LogisticRegression(384->1)",
+    "trainable_params": 385,
+    "total_params": 385,
+    "fp32_checkpoint_bytes": {
+      "joblib_sklearn": 13617,
+      "onnx": 8259
+    },
+    "int8_checkpoint_bytes": {
+      "onnx": 8372
+    },
+    "measured_directly_in_this_environment": true
+  },
+  "whisper_tiny_encoder": {
+    "measured_directly_in_this_environment": true,
+    "how": "Instantiated transformers.WhisperModel(WhisperConfig(...)) locally from the publicly documented whisper-tiny architecture spec, with HF_HUB_OFFLINE=1 (zero network calls -- confirmed no huggingface.co access was used). Weights are RANDOMLY INITIALIZED, not the pretrained openai/whisper-tiny checkpoint (which cannot be downloaded in this sandbox). Parameter count and serialized size depend only on tensor shape/dtype, not weight values, so these numbers are exact and identical to what the real pretrained encoder would report -- accuracy/F1 numbers are NOT implied or claimed here.",
+    "config_used": {
+      "vocab_size": 51865,
+      "num_mel_bins": 80,
+      "encoder_layers": 4,
+      "encoder_attention_heads": 6,
+      "decoder_layers": 4,
+      "decoder_attention_heads": 6,
+      "d_model": 384,
+      "encoder_ffn_dim": 1536,
+      "decoder_ffn_dim": 1536,
+      "max_source_positions": 1500
+    },
+    "encoder_only_total_params": 8208384,
+    "encoder_only_trainable_params": 7632384,
+    "full_model_encoder_plus_decoder_total_params": 37760640,
+    "encoder_fp32_state_dict_bytes_in_memory": 32833536,
+    "encoder_fp32_checkpoint_bytes_on_disk": 32859659,
+    "encoder_fp32_checkpoint_mb_on_disk": 31.34,
+    "public_total_previously_cited_encoder_plus_decoder": "~39M (OpenAI Whisper paper / model card)",
+    "note_vs_prior_citation": "Directly-instantiated full model (encoder+decoder) = 37,760,640 params, close to (slightly under) the commonly cited ~39M figure -- the small gap is expected from minor config/embedding-tying differences between the OpenAI reference implementation and the HF re-implementation, not an error in either. The encoder-only figure was previously left unstated as an 'unverified estimate'; it is now a direct measurement: 8,208,384 params."
+  },
+  "end_to_end_system": {
+    "note": "The full deployed system (frozen Whisper-tiny encoder + this classifier head) is dominated by the encoder: 8,208,384 params there vs. 385 in the trained head. A genuinely 'tiny' claim for the full system rests almost entirely on Whisper-tiny's own footprint, not on anything added in this project."
+  }
+}

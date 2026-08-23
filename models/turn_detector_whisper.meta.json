@@ -1,0 +1,12 @@
+{
+  "embedding_model": "openai/whisper-tiny",
+  "embedding_dim": 384,
+  "pooling": "mean over encoder time steps",
+  "classifier_head": "logreg_C0.1",
+  "sample_rate": 16000,
+  "label_map": {
+    "0": "CONTINUE",
+    "1": "END"
+  },
+  "trained_on": "pipecat-ai/smart-turn-data-v3.2-train (2000-sample subset, seed=42)"
+}

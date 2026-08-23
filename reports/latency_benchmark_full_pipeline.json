@@ -1,0 +1,149 @@
+{
+  "scope": "Stages 1 (resample), 2 (feature extraction), 4 (classifier head) use real, already-trained/real-code artifacts. Stage 3 (encoder forward pass) uses an architecturally-identical, random-weight whisper-tiny encoder (huggingface.co unreachable in this sandbox) -- its LATENCY is real and weight-independent, but no accuracy claim is made for it. See module docstring for the full explanation, including the constant-encoder-latency finding caused by fixed 30s padding.",
+  "cold_start_full_pipeline_ms": 363.84388800001943,
+  "warm_by_duration": [
+    {
+      "duration_sec": 1,
+      "resample": {
+        "mean_ms": 1.3817052068933946,
+        "p50_ms": 1.3300760000447553,
+        "p95_ms": 1.4420624000194948,
+        "n_runs": 29
+      },
+      "feature_extract": {
+        "mean_ms": 9.128469137922052,
+        "p50_ms": 9.139196000091943,
+        "p95_ms": 10.079847599990899,
+        "n_runs": 29
+      },
+      "encoder_forward_random_weights": {
+        "mean_ms": 335.61426224139274,
+        "p50_ms": 334.16099400005805,
+        "p95_ms": 346.1751682000113,
+        "n_runs": 29
+      },
+      "classifier_head_real_weights": {
+        "mean_ms": 0.5744507241317854,
+        "p50_ms": 0.5699629999753597,
+        "p95_ms": 0.6462505999479616,
+        "n_runs": 29
+      },
+      "total_warm_mean_ms": 346.69888731033996
+    },
+    {
+      "duration_sec": 2,
+      "resample": {
+        "mean_ms": 1.7587760999996742,
+        "p50_ms": 1.6524410000329226,
+        "p95_ms": 2.3582154999928657,
+        "n_runs": 30
+      },
+      "feature_extract": {
+        "mean_ms": 9.312941799991373,
+        "p50_ms": 9.035211500020068,
+        "p95_ms": 11.003039599995644,
+        "n_runs": 30
+      },
+      "encoder_forward_random_weights": {
+        "mean_ms": 339.84225443333577,
+        "p50_ms": 338.58063699995,
+        "p95_ms": 354.4349601999386,
+        "n_runs": 30
+      },
+      "classifier_head_real_weights": {
+        "mean_ms": 0.5977448333396751,
+        "p50_ms": 0.577599999985523,
+        "p95_ms": 0.7432031000064397,
+        "n_runs": 30
+      },
+      "total_warm_mean_ms": 351.5117171666665
+    },
+    {
+      "duration_sec": 4,
+      "resample": {
+        "mean_ms": 2.241797866683252,
+        "p50_ms": 2.2235249999766893,
+        "p95_ms": 2.3566242500123735,
+        "n_runs": 30
+      },
+      "feature_extract": {
+        "mean_ms": 9.424393366661358,
+        "p50_ms": 9.311083000000053,
+        "p95_ms": 10.554533999976453,
+        "n_runs": 30
+      },
+      "encoder_forward_random_weights": {
+        "mean_ms": 338.7912192999957,
+        "p50_ms": 338.60162599995647,
+        "p95_ms": 348.49840495002127,
+        "n_runs": 30
+      },
+      "classifier_head_real_weights": {
+        "mean_ms": 0.572749266655137,
+        "p50_ms": 0.5680520000055367,
+        "p95_ms": 0.640185600013865,
+        "n_runs": 30
+      },
+      "total_warm_mean_ms": 351.03015979999543
+    },
+    {
+      "duration_sec": 6,
+      "resample": {
+        "mean_ms": 2.8482998666731874,
+        "p50_ms": 2.8061345000196525,
+        "p95_ms": 3.032774200005406,
+        "n_runs": 30
+      },
+      "feature_extract": {
+        "mean_ms": 9.791453800013036,
+        "p50_ms": 9.748228999967523,
+        "p95_ms": 10.736135749942832,
+        "n_runs": 30
+      },
+      "encoder_forward_random_weights": {
+        "mean_ms": 341.4413963999892,
+        "p50_ms": 341.5876715000081,
+        "p95_ms": 352.94726550000064,
+        "n_runs": 30
+      },
+      "classifier_head_real_weights": {
+        "mean_ms": 0.5987641999998535,
+        "p50_ms": 0.5953534999889598,
+        "p95_ms": 0.6698558000550747,
+        "n_runs": 30
+      },
+      "total_warm_mean_ms": 354.67991426667527
+    },
+    {
+      "duration_sec": 8,
+      "resample": {
+        "mean_ms": 3.422894299994065,
+        "p50_ms": 3.4000014999833184,
+        "p95_ms": 3.5724499499906415,
+        "n_runs": 30
+      },
+      "feature_extract": {
+        "mean_ms": 9.444096400003824,
+        "p50_ms": 9.244954499990854,
+        "p95_ms": 10.65402219996372,
+        "n_runs": 30
+      },
+      "encoder_forward_random_weights": {
+        "mean_ms": 342.0229742999899,
+        "p50_ms": 343.43545100000483,
+        "p95_ms": 350.93543619999537,
+        "n_runs": 30
+      },
+      "classifier_head_real_weights": {
+        "mean_ms": 0.581017933336625,
+        "p50_ms": 0.5756775000236303,
+        "p95_ms": 0.6314659999702599,
+        "n_runs": 30
+      },
+      "total_warm_mean_ms": 355.4709829333244
+    }
+  ],
+  "gpu": "NOT RUN -- no GPU present in this sandbox (CPU-only container).",
+  "peak_rss_kb": 959536,
+  "n_runs_per_duration_after_cold_start_exclusion": 29
+}

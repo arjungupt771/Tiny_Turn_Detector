@@ -1,0 +1,5 @@
+{
+  "threshold": 0.44999999999999996,
+  "selection_split": "validation",
+  "max_false_end_rate": null
+}
